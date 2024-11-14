@@ -74,12 +74,15 @@ setTipAmount(tip);
         <div className="grid lg:grid-cols-2 gap-4 bg-slate-600 lg:max-w-5xl mx-auto rounded-lg p-4">
         <div>
           <Label htmlFor="bill">Bill(ksh)</Label>
-          <Input type="number" id="bill" name="bill" placeholder={1000} defaultValue={billAmount} setValue={setBillAmount} />
+          <Input type="number" id="bill" name="bill" placeholder={1000} value={billAmount} setValue={setBillAmount} />
 
           <p className="mt-8 capitalize">Select tip %</p>
           <div className="mt-4 grid grid-cols-3 gap-4" >
           {tipPercentages.map((item , index)=>(
-            <Tip key={index} percentage={item} setTipPercentage ={setTipPercentage } />
+            <Tip key={index}
+             percentage={item}
+             tipPercentage={tipPercentage}
+              setTipPercentage ={setTipPercentage } />
          ) )}
           
 
@@ -95,7 +98,9 @@ setTipAmount(tip);
 
           <Label htmlFor="people">Number of people</Label>
           
-          <Input type="number" id="people" name="people" placeholder={2} setValue={setPeopleQuantity} />
+          <Input type="number" id="people" name="people" placeholder={2} 
+          value={peopleQuantity} 
+          setValue={setPeopleQuantity} />
           <Button handleClick={calculateTotal}>Calculate Tip </Button> 
         </div>
  
@@ -128,22 +133,29 @@ setTipAmount(tip);
 
 // TIP COMPONENT
 // using props
-function Tip({percentage , setTipPercentage}){
+function Tip({percentage ,tipPercentage, setTipPercentage}){
   return (
     <label  className="px-4 py-2  rounded-md bg-brand-teal text-gray-800 flex gap-2 justify-center">
-    <input type="radio" name="tip" value={percentage} 
+    <input type="radio" name="tip" 
+    value={percentage} 
     onChange={(event)=> setTipPercentage(event.target. value)}
+    checked={percentage === Number(tipPercentage)}
      /> {percentage}%
     </label>
 
   )
 }
 //input component
-function Input ( {type , name, id, placeholder ,defaultValue, setValue}){
+function Input ( {type , name, id, placeholder ,value, setValue}){
   return (
-    <input type={type} name={name} id={id}  placeholder={placeholder} 
-    defaultValue={defaultValue}
-    onBlur={(event)=> setValue(event.target.value)}
+    <input 
+    type={type}
+     name={name} 
+     id={id} 
+     placeholder={placeholder} 
+    value={value ?? ""}
+    // defaultValue={defaultValue}
+    onChange={(event)=> setValue(event.target.value)}
     className=" px-3 py-2 w-full block bg-gray-200 text-gray-800 rounded-lg border border-slate-500 " />
 
   )
